@@ -1,1 +1,7 @@
-{"shell-version": ["3.4.2"], "uuid": "radeon@k.marszalkowski", "name": "Radeon Control", "description": "Extension to control your Radeon graphics card fanspeed, resolution, screen rotation."}
+{
+		"shell-version": ["3.4.2"], 
+		"uuid": "radeon@k.marszalkowski", 
+		"name": "Radeon Control", 
+		"url": "http://localhost",
+		"description": "Extension to control your Radeon graphics card fanspeed, resolution, screen rotation."
+}
