@@ -4,6 +4,9 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const GLib = imports.gi.GLib;
+const Lang = imports.lang;
+const Mainloop = imports.mainloop
 
 function init() {
 	return new ExtensionController();
@@ -33,6 +36,7 @@ function ExtensionController() {
 
 		disable: function() {
 			Main.panel._rightBox.remove_actor(this.extension.actor);
+			GLib.source_remove(this.extension.event);
 			//Main.panel._menus.removeMenu(this.extension.menu);
 			
 			// Causing reference error
@@ -56,18 +60,34 @@ RadeonExtension.prototype = {
 		this.panelContainer = new St.BoxLayout();
 		this.actor.add_actor(this.panelContainer);
 
-		this.panelLabel = new St.Label({style_class: "radeon-label", text: _("Radeon")});
+		this.panelLabel = new St.Label({style_class: "radeon-label", text: _("GPU:")});
 		this.currentActivity = null;
 
 		// icon
-		this.icon = new St.Icon({ icon_name: 'system-run',
+		/*this.icon = new St.Icon({ icon_name: 'system-run',
                              icon_type: St.IconType.SYMBOLIC,
                              style_class: 'system-status-icon' });
 
-		this.panelContainer.add(this.icon);
+		this.panelContainer.add(this.icon);*/
 		this.panelContainer.add(this.panelLabel);
 
+		this.event = GLib.timeout_add_seconds(0, 5, Lang.bind(this, this.getTemperature));
+		this.getTemperature();
+
 	},
+
+	getTemperature: function() {
+		let output = GLib.spawn_command_line_sync("aticonfig --odgt");
+		let reg = new RegExp("Temperature - ([0-9C. ]*)","g");
+		let temp = reg.exec(output); 
+		if (temp[1]) {
+			var label = "GPU: " + temp[1];
+			this.panelLabel.set_text(label);
+		} else {
+			global.log(temp);
+		}
+		return true;
+	}
 
 }
 
