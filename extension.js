@@ -20,14 +20,15 @@ function ExtensionController() {
 
 		enable: function() {
 			this.extension = new RadeonExtension();
-			Main.panel._rightBox.insert_child_at_index(this.extension.actor, 0);
-			Main.panel._menus.addMenu(this.extension.menu);
+			Main.panel.addToStatusArea("radeonControl", this.extension, 0, "right");
+			Main.panel.menuManager.addMenu(this.extension.menu);
 		},
 
 		disable: function() {
-			Main.panel._rightBox.remove_actor(this.extension.actor);
-			Main.panel._menus.removeMenu(this.extension.menu);
+			Main.panel.menuManager.removeMenu(this.extension.menu);
 			GLib.source_remove(this.extension.event);
+			this.extension.actor.destroy();
+			this.extension = null;
 		}
 	}
 }

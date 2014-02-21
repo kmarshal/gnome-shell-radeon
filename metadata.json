@@ -1,7 +1,7 @@
 {
-		"shell-version": ["3.4"], 
+		"shell-version": ["3.8"], 
 		"uuid": "radeon@marszalkowski", 
 		"name": "Radeon Control", 
 		"url": "http://localhost",
-		"description": "Extension to control your Radeon GPU fan speed. Display current GPU temperature."
+		"description": "Extension to control Radeon GPU fan speed. Display current GPU temperature."
 }
